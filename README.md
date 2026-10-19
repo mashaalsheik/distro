@@ -48,7 +48,7 @@ Each product gets a short uppercase `code` used in its IDs:
 
 | Folder | Code | Status |
 | --- | --- | --- |
-| `products/diybcode` | `DIYB` | context drafted from the app README; needs your review |
+| `products/diybcode` | `DIYB` | context drafted from the [DIYbcode](https://github.com/mashaalsheik/DIYbcode) README; needs your review |
 
 To add one: copy `products/_template` to `products/<slug>`, set `code` in `context.md`, fill in the context, and add a row above. Or run `/dos-brief` and ask it to set up a new product.
 

@@ -7,7 +7,7 @@ accounts: [unknown]
 
 # DIYbcode: context
 
-> Drafted from the app's README. Everything marked `unknown` or "to confirm" needs your answer before a brief can use it.
+> Drafted from the [DIYbcode app README](https://github.com/mashaalsheik/DIYbcode). Everything marked `unknown` or "to confirm" needs your answer before a brief can use it.
 
 ## What it is
 
