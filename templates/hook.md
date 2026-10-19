@@ -3,6 +3,7 @@ id: H-000
 swipes: [SW-000]             # references that support this pattern
 source_views: unknown        # from the swipe, with its capture date below
 source_captured: unknown
+media: []                    # media it has been seen in, e.g. [slideshow, video]
 status: candidate            # candidate | developing | used | retired
 used_in: []                  # draft IDs, e.g. [D-DIYB-001-v2]
 products: []
@@ -24,7 +25,7 @@ What continuing through the post will deliver.
 
 ## Opening visual
 
-How the image and text work together on slide 1.
+How the image, on-screen text and (for video) the first spoken line work together on slide 1 or in the first ~3 seconds.
 
 ## Required payoff
 

@@ -1,6 +1,6 @@
 # Distribution workspace
 
-A research-to-production system for short-form slideshow content across several products. Saved posts become analysis, analysis becomes production instructions, and published results change the next brief.
+A research-to-production system for short-form content (slideshows, short videos, image and text posts) across several products. Saved posts become analysis, analysis becomes production instructions, and published results change the next brief.
 
 The pattern libraries are **shared**: a hook or format learned from one niche can be tested for any product. Everything that depends on a specific audience (context, briefs, drafts, results, what that audience has already seen) lives **per product**.
 
@@ -51,6 +51,10 @@ Each product gets a short uppercase `code` used in its IDs:
 | `products/diybcode` | `DIYB` | context drafted from the [DIYbcode](https://github.com/mashaalsheik/DIYbcode) README; needs your review |
 
 To add one: copy `products/_template` to `products/<slug>`, set `code` in `context.md`, fill in the context, and add a row above. Or run `/dos-brief` and ask it to set up a new product.
+
+## Mixed media
+
+Drop screenshots, slideshow images and videos into the same inbox ([Drive](assets/README.md) or `assets/inbox/`). `/dos-collect` groups files into posts, and gives each one a `media` type (`slideshow`, `video`, `image`, `text`) and a `capture` (`complete`, or `partial` when you only have part of it, like one screenshot of a video). Every record describes content as **beats**: slide numbers for slideshows, timestamps for video. That way hooks, breakdowns and formats can be compared across types. Videos get one frame per second and a timestamped contact sheet. Speech isn't transcribed automatically, so supply the voiceover or the platform's captions.
 
 ## Getting started
 

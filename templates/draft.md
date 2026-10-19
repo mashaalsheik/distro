@@ -4,6 +4,7 @@ brief: B-XXXX-000
 format: F-000
 version: 1
 status: in-review            # in-review | revise | approved | published | rejected
+media: slideshow             # slideshow | video | image | text
 exports: assets/D-XXXX-000-v1/
 ---
 
@@ -11,11 +12,13 @@ exports: assets/D-XXXX-000-v1/
 
 Brief: [B-XXXX-000](../briefs/B-XXXX-000.md) · exports: `assets/D-XXXX-000-v1/` · contact sheet: `assets/D-XXXX-000-v1/contact-sheet.png`
 
-## Slide copy
+## Copy
 
-| # | Text |
-| --- | --- |
-| 1 | |
+Slides, or for video the script and shot list.
+
+| Beat | On-screen text | Spoken | Visual / shot |
+| --- | --- | --- | --- |
+| | | | |
 
 ## Departures from the spec
 

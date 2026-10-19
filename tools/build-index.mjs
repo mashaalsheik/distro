@@ -9,10 +9,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
 
 const TYPES = {
-  SW: { sheet: 'swipes', columns: ['id', 'state', 'platform', 'account', 'published', 'captured', 'views', 'saves', 'shares', 'slides', 'outlier', 'products', 'url', 'drive', 'title'] },
+  SW: { sheet: 'swipes', columns: ['id', 'state', 'media', 'capture', 'platform', 'account', 'published', 'captured', 'views', 'saves', 'shares', 'avg_watch', 'completion', 'length', 'outlier', 'products', 'url', 'drive', 'title'] },
   BD: { sheet: null },
   H: { sheet: 'hooks', columns: ['id', 'status', 'swipes', 'source_views', 'source_captured', 'used_in', 'products', 'title'] },
-  F: { sheet: 'formats', columns: ['id', 'name', 'status', 'swipes', 'results', 'products', 'canvas'] },
+  F: { sheet: 'formats', columns: ['id', 'name', 'media', 'status', 'swipes', 'results', 'products', 'canvas'] },
   B: { sheet: 'briefs', columns: ['id', 'product', 'status', 'format', 'hook', 'swipes', 'variation_of', 'title'] },
   D: { sheet: null },
   R: { sheet: 'results', columns: ['id', 'product', 'published', 'captured', 'age_days', 'views', 'saves', 'shares', 'comments', 'follows', 'clicks', 'format', 'hook', 'brief', 'draft', 'url'] },

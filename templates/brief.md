@@ -18,9 +18,11 @@ Who this post is for, and which problem from `context.md` it addresses.
 
 The exact slide-1 copy, and what it promises.
 
-## Slide plan
+## Beat plan
 
-| # | Role (from the format) | Content | Asset |
+One row per slide, or per time range for video. For video, put the spoken line and the on-screen text in Content.
+
+| Beat | Role (from the format) | Content | Asset / shot |
 | --- | --- | --- | --- |
 | 1 | | | |
 

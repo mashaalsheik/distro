@@ -21,8 +21,8 @@ Input: a product slug, and optionally an audience problem, hook, format or conce
 1. Read the product's `context.md` and `used-content.md`. If **Objective** or **Factual constraints** are `unknown`, ask before continuing.
 2. Pick (or confirm) the format whose `products` includes this product and whose required inputs we can actually supply. Pick a hook whose required payoff the body can deliver.
 3. Copy `templates/brief.md` to `products/<slug>/briefs/B-<CODE>-###.md` (next free number for that product).
-4. Fill audience and problem, the exact opening copy, the slide plan (one row per slide, following the format's sequence), available assets with paths, claims to verify, and the intended action.
+4. Fill audience and problem, the exact opening copy, the beat plan (one row per slide or time range, following the format's sequence), available assets with paths, claims to verify, and the intended action.
 5. Every factual claim gets a source in `context.md` or a link. A claim without one stays in **Claims to verify** and blocks production.
 6. If this is a variation, set `variation_of` and write what changes and what it will help us learn before anything is produced.
 7. If the body can't deliver the opening's promise, revise the promise now.
-8. Run `node tools/build-index.mjs` and show the brief for approval. Don't produce slides until the user approves it.
+8. Run `node tools/build-index.mjs` and show the brief for approval. Don't produce anything until the user approves it.

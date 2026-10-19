@@ -7,7 +7,8 @@ description: Stage 7. Critique a rendered draft against its brief and format, na
 
 Input: a draft ID.
 
-1. Look at the exported slides in order, at phone size (scale to about 390 px wide). Read them first without the brief.
+1. Look at the exported slides in order, at phone size (scale to about 390 px wide), or for video the cut's frame contact sheet (or the script if there's no cut yet). Read them first without the brief.
+   - Video: does the promise land in the first 3 seconds with sound off? Any beat that drags?
    - Can slide 1 be understood in under two seconds?
    - Does every slide add something?
    - Is each image doing useful work? Any crop cutting off information, letterboxing, or anything that looks like an accidental screenshot?
