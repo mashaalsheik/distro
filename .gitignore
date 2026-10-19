@@ -1,0 +1,5 @@
+# Source images, slide exports and contact sheets live in Drive (or here, untracked).
+assets/*
+!assets/README.md
+products/*/drafts/**/*.png
+products/*/drafts/**/*.jpg
