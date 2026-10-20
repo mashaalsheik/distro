@@ -11,7 +11,7 @@ Input: analyzed swipes (`state: analyzed`).
 
 1. For each opening worth keeping, check `library/hooks/` for an existing hook with the same pattern. If one exists, add the swipe to its `swipes` list instead of making a duplicate.
 2. Otherwise copy `templates/hook.md` to `library/hooks/H-###.md`. Store the verbatim opening, the reusable pattern with `[slots]`, reader tension, promise, opening visual, and the **required payoff** the body must deliver.
-3. Copy the source's view count and capture date into `source_views` / `source_captured`.
+3. Copy the source's view count, platform and capture date from its **Performance** table into `source_views` / `source_platform` / `source_captured` (the latest snapshot on its main platform).
 4. Note if the pattern rests on one reference, and anything in the source's opening we couldn't repeat honestly.
 5. Run `node tools/build-index.mjs`.
 

@@ -15,7 +15,7 @@ For each swipe:
 4. Keep **Observations** (checkable against the post: "the first slide names one familiar problem") separate from **Hypotheses** ("the time estimates make the items feel achievable", phrased as something to test).
 5. Identify unsupported claims, missing steps, and any beat that repeats an earlier point without adding value.
 6. Say what the viewer has at the end that they didn't have at the start, and whether that pays off the opening.
-7. If metrics are present, compute simple ratios (saves ÷ views, shares ÷ views; for video, average watch ÷ length) and show the arithmetic with the capture date.
+7. If metrics are present, compute simple ratios (saves ÷ views, shares ÷ views; for video, average watch ÷ length) per platform, and show the arithmetic with the platform and capture date. Don't compare or add numbers across platforms: they count views differently.
 8. Fill **Keep / change** so an adaptation knows what to preserve.
 9. In the swipe record, link the breakdown under **Analysis**, add adaptation ideas for the products in its `products` list (read their `context.md`), and set `state: analyzed`.
 10. Run `node tools/build-index.mjs`.

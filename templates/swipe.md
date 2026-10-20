@@ -2,20 +2,10 @@
 id: SW-000
 media: unknown               # slideshow | video | image | text
 capture: unknown             # complete | partial — partial = you only have some of it (e.g. one screenshot of a video)
-url: unknown
-platform: unknown            # tiktok | instagram | x | linkedin | youtube | …
-account: unknown
-published: unknown           # YYYY-MM-DD
-captured: unknown            # YYYY-MM-DD, the day you saved it and read the metrics
-views: unknown
-likes: unknown
-saves: unknown
-shares: unknown
-comments: unknown
-avg_watch: unknown           # video only, seconds
-completion: unknown          # video only, % who watched to the end
+platforms: []                # every platform it's posted on: tiktok | instagram | youtube | x | linkedin | threads | facebook | pinterest | …
+collected: unknown           # YYYY-MM-DD, the day this record was created
 length: unknown              # slide count for slideshows, seconds for video, 1 for image/text
-outlier: unknown             # yes | no | unknown — compared with the account's typical post
+outlier: unknown             # yes | no | unknown — compared with the account's typical post on the same platform
 products: []                 # product slugs this might be relevant to, e.g. [diybcode]
 drive: unknown               # Drive folder link for distro-assets/SW-000/
 state: collected             # collected | analyzed | ready
@@ -24,6 +14,22 @@ state: collected             # collected | analyzed | ready
 # SW-000: <opening text or first line, verbatim>
 
 Assets: [assets/SW-000/](../../assets/SW-000/) · contact sheet: `assets/SW-000/contact-sheet.png`
+
+## Where it's posted
+
+One row per platform. The same creative cross-posted to TikTok and Reels is one record with two rows; a reworked version is a separate record.
+
+| Platform | Account | URL | Published |
+| --- | --- | --- | --- |
+| | | | |
+
+## Performance
+
+One row per platform per snapshot; add a row each time you check again, don't overwrite. Only numbers actually seen. `Source` is where the number came from: a file in the asset folder (`metrics.png`, `01.png`), `post` (read off the live post) or `user`. Use `Other` for platform-specific counts (e.g. `reposts=120; quotes=8`).
+
+| Platform | Captured | Views | Likes | Comments | Shares | Saves | Avg watch (s) | Completion % | Other | Source |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| | | | | | | | | | | |
 
 ## What we have
 

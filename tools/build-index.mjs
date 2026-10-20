@@ -9,14 +9,15 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
 
 const TYPES = {
-  SW: { sheet: 'swipes', columns: ['id', 'state', 'media', 'capture', 'platform', 'account', 'published', 'captured', 'views', 'saves', 'shares', 'avg_watch', 'completion', 'length', 'outlier', 'products', 'url', 'drive', 'title'] },
+  SW: { sheet: 'swipes', columns: ['id', 'state', 'media', 'capture', 'platforms', 'collected', 'length', 'outlier', 'products', 'drive', 'title'] },
   BD: { sheet: null },
-  H: { sheet: 'hooks', columns: ['id', 'status', 'swipes', 'source_views', 'source_captured', 'used_in', 'products', 'title'] },
+  H: { sheet: 'hooks', columns: ['id', 'status', 'swipes', 'source_views', 'source_platform', 'source_captured', 'used_in', 'products', 'title'] },
   F: { sheet: 'formats', columns: ['id', 'name', 'media', 'status', 'swipes', 'results', 'products', 'canvas'] },
   B: { sheet: 'briefs', columns: ['id', 'product', 'status', 'format', 'hook', 'swipes', 'variation_of', 'title'] },
   D: { sheet: null },
   R: { sheet: 'results', columns: ['id', 'product', 'published', 'captured', 'age_days', 'views', 'saves', 'shares', 'comments', 'follows', 'clicks', 'format', 'hook', 'brief', 'draft', 'url'] },
 };
+const METRIC_COLUMNS = ['swipe', 'platform', 'account', 'url', 'published', 'captured', 'views', 'likes', 'comments', 'shares', 'saves', 'avg_watch', 'completion', 'other', 'source'];
 const LINK_FIELDS = ['swipe', 'swipes', 'hook', 'format', 'brief', 'draft', 'used_in', 'results', 'variation_of'];
 const EMPTY = new Set(['', 'unknown', 'none']);
 
@@ -47,6 +48,18 @@ function parseFrontmatter(text) {
   return data;
 }
 
+// Rows of the Markdown table under `## <heading>`, as objects keyed by slugified header.
+function parseTable(text, heading) {
+  const section = text.split(new RegExp(`^## ${heading}\\s*$`, 'm'))[1]?.split(/^## /m)[0];
+  if (!section) return [];
+  const lines = section.split(/\r?\n/).filter((l) => l.trim().startsWith('|'));
+  if (lines.length < 2) return [];
+  const cells = (l) => l.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
+  const keys = cells(lines[0]).map((h) => h.toLowerCase().replace(/\(.*?\)|%/g, '').trim().replace(/\s+/g, '_'));
+  return lines.slice(2).map(cells).filter((r) => r.some(Boolean))
+    .map((r) => Object.fromEntries(keys.map((k, i) => [k, r[i] ?? ''])));
+}
+
 const asList = (v) => (Array.isArray(v) ? v : v === undefined ? [] : [v]).filter((x) => !EMPTY.has(x));
 const prefixOf = (id) => id.split('-')[0];
 
@@ -74,7 +87,13 @@ for (const file of [...walk(join(root, 'library')), ...walk(join(root, 'products
   if (product && productCodes.has(product) && id.split('-')[1] !== productCodes.get(product)) {
     problems.push(`${rel}: ${id} doesn't use this product's code ${productCodes.get(product)}`);
   }
-  records.set(id, { ...data, rel, product: data.product ?? product });
+  const record = { ...data, rel, product: data.product ?? product };
+  if (prefixOf(id) === 'SW') {
+    const text = readFileSync(file, 'utf8');
+    record.posts = parseTable(text, "Where it's posted");
+    record.performance = parseTable(text, 'Performance');
+  }
+  records.set(id, record);
 }
 
 for (const record of records.values()) {
@@ -82,6 +101,22 @@ for (const record of records.values()) {
     for (const target of asList(record[field])) {
       if (!records.has(target)) problems.push(`${record.rel}: ${field} → ${target} does not exist`);
     }
+  }
+}
+
+const metricRows = [];
+for (const r of records.values()) {
+  if (prefixOf(r.id) !== 'SW') continue;
+  const declared = new Set(asList(r.platforms).map((p) => p.toLowerCase()));
+  const posted = new Map(r.posts.map((p) => [p.platform.toLowerCase(), p]));
+  for (const p of posted.keys()) if (!declared.has(p)) problems.push(`${r.rel}: ${p} is in "Where it's posted" but not in platforms`);
+  for (const p of declared) if (!posted.has(p)) problems.push(`${r.rel}: ${p} is in platforms but has no row in "Where it's posted"`);
+  for (const m of r.performance) {
+    const platform = m.platform.toLowerCase();
+    if (!posted.has(platform)) problems.push(`${r.rel}: Performance row for ${m.platform || '(blank platform)'} has no row in "Where it's posted"`);
+    if (!m.captured || m.captured === 'unknown') problems.push(`${r.rel}: Performance row for ${m.platform} has no captured date`);
+    const post = posted.get(platform) ?? {};
+    metricRows.push({ swipe: r.id, ...m, platform, account: post.account, url: post.url, published: post.published });
   }
 }
 
@@ -99,6 +134,9 @@ if (!checkOnly) {
     const lines = [columns.join(','), ...rows.map((r) => columns.map((c) => csvCell(r[c])).join(','))];
     writeFileSync(join(root, 'index', `${sheet}.csv`), lines.join('\n') + '\n');
   }
+  metricRows.sort((a, b) => a.swipe.localeCompare(b.swipe, undefined, { numeric: true }) || a.platform.localeCompare(b.platform) || a.captured.localeCompare(b.captured));
+  const lines = [METRIC_COLUMNS.join(','), ...metricRows.map((r) => METRIC_COLUMNS.map((c) => csvCell(r[c])).join(','))];
+  writeFileSync(join(root, 'index', 'swipe-metrics.csv'), lines.join('\n') + '\n');
 }
 
 const counts = Object.keys(TYPES).map((p) => `${p} ${[...records.values()].filter((r) => prefixOf(r.id) === p).length}`);

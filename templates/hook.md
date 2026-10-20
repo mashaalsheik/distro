@@ -1,7 +1,8 @@
 ---
 id: H-000
 swipes: [SW-000]             # references that support this pattern
-source_views: unknown        # from the swipe, with its capture date below
+source_views: unknown        # from the swipe's Performance table, with its platform and capture date below
+source_platform: unknown
 source_captured: unknown
 media: []                    # media it has been seen in, e.g. [slideshow, video]
 status: candidate            # candidate | developing | used | retired
