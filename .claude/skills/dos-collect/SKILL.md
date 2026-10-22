@@ -30,7 +30,8 @@ Find the next free `SW-###` in `library/swipes/` and create `assets/SW-###/` for
 - **Slideshow:** save slides in order as `01.png`, `02.png`, …. Make `contact-sheet.png` (one row, or a grid above 6 slides).
 - **Video:** save as `source.<ext>`. Then:
   - `ffprobe` for duration → `length` in seconds.
-  - Extract a frame every second: `ffmpeg -i source.mp4 -vf fps=1 frames/%03d.png`. For videos over 60s, every 2s.
+  - Extract frames: `ffmpeg -i source.mp4 -vf fps=1 frames/%03d.png`. Use `fps=2` for videos under 15s (fast cuts get missed at 1 fps) and `fps=0.5` for videos over 60s; use the same rate in the contact sheet.
+  - Screen recordings: the app's interface is in frame, so read the platform, handle, caption, music line and counts from it. The recording may start or stop mid-post; it's `complete` only if you can see the video loop back to its first frame.
   - Build `contact-sheet.png` from the frames with timestamps: `ffmpeg -i source.mp4 -vf "fps=1,scale=270:-1,drawtext=text='%{pts\:hms}':x=8:y=8:fontsize=20:fontcolor=white:box=1:boxcolor=black@0.6,tile=6x5" -frames:v 1 contact-sheet.png` (adjust the tile grid to fit).
   - Audio: there's no speech-to-text in this environment. If the video has burned-in captions, transcribe them from the frames and say so. Otherwise ask the user for the spoken words, or the platform's auto-captions, and leave **Spoken** as `unknown` until then. Never guess the voiceover.
 - **Image / text:** save as `01.png`. No contact sheet needed.
