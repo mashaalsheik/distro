@@ -1,5 +1,5 @@
-# Source images, slide exports and contact sheets live in Drive (or here, untracked).
-assets/*
-!assets/README.md
+# Source images, videos, frames and contact sheets live in Drive. Locally, assets is a link to
+# the Drive for Desktop folder (node tools/setup-local.mjs); in the cloud it's a plain folder.
+/assets
 products/*/drafts/**/*.png
 products/*/drafts/**/*.jpg

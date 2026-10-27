@@ -5,7 +5,7 @@ description: Stage 1. Turn supplied links, screenshots, slideshow images or vide
 
 # Collect references
 
-Input can be any mix of: links, screenshots, slideshow images, video files, or "the inbox". The inbox is the Drive folder `distro-assets/inbox` (link in `assets/README.md`) or a local `assets/inbox/`.
+Input can be any mix of: links, screenshots, slideshow images, video files, or "the inbox". The inbox is the Drive folder `distro-assets/inbox` (links in `README.md` under **Assets and Drive**) or a local `assets/inbox/`.
 
 ## 1. Sort the inbox into posts
 
@@ -29,16 +29,18 @@ Find the next free `SW-###` in `library/swipes/` and create `assets/SW-###/` for
 
 - **Slideshow:** save slides in order as `01.png`, `02.png`, …. Make `contact-sheet.png` (one row, or a grid above 6 slides).
 - **Video:** save as `source.<ext>`. Then:
-  - `ffprobe` for duration → `length` in seconds.
-  - Extract frames: `ffmpeg -i source.mp4 -vf fps=1 frames/%03d.png`. Use `fps=2` for videos under 15s, or any video that cuts faster than once a second (fast cuts get missed at 1 fps), and `fps=0.5` for videos over 60s; use the same rate in the contact sheet.
+  - Run `node tools/frames.mjs SW-###`. It renames a single video to `source.<ext>`, picks the frame rate (2 fps under 15s, 1 fps up to 60s, 0.5 fps beyond), writes `frames/` and a timestamped `contact-sheet.png`. If the video cuts faster than once a second, set `frames_fps: 2` in the record and run it again.
+  - Set `length` from the duration it prints.
   - Screen recordings: the app's interface is in frame, so read the platform, handle, caption, music line and counts from it. The recording may start or stop mid-post; it's `complete` only if you can see the video loop back to its first frame.
-  - Build `contact-sheet.png` from the frames with timestamps: `ffmpeg -i source.mp4 -vf "fps=1,scale=270:-1,drawtext=text='%{pts\:hms}':x=8:y=8:fontsize=20:fontcolor=white:box=1:boxcolor=black@0.6,tile=6x5" -frames:v 1 contact-sheet.png` (adjust the tile grid to fit).
   - Audio: there's no speech-to-text in this environment. If the video has burned-in captions, transcribe them from the frames and say so. Otherwise ask the user for the spoken words, or the platform's auto-captions, and leave **Spoken** as `unknown` until then. Never guess the voiceover.
 - **Image / text:** save as `01.png`. No contact sheet needed.
 - **Metrics screenshots:** save as `metrics.png` (or `metrics-tiktok.png`, `metrics-instagram.png` when there are several) and copy only the numbers shown.
 - Keep originals unedited. Don't put frames you've cropped or annotated in the asset folder.
 
-Drive: create `distro-assets/SW-###/`, upload the post's files there, move (or copy, then trash) the originals out of the inbox, and put the folder's link in `drive`. If the Drive connector can't download or move a file, say which one and continue with whatever you could reach.
+Drive:
+- **Local, with `assets/` linked to Drive** (`node tools/setup-local.mjs`; check with `ls -la assets`): saving to `assets/SW-###/` *is* uploading, and `assets/inbox/` is the Drive inbox. Move inbox files into the record's folder rather than copying them. Get the folder's link from the Drive connector if you have it (search for the `SW-###` folder title); otherwise leave `drive: unknown` and say so.
+- **Cloud session, `assets/` is a plain folder:** files saved there don't reach Drive, and the connector can't upload anything bigger than a small text file. Create `distro-assets/SW-###/` with the connector, put its link in `drive`, and tell the user which original goes in which folder.
+- If the connector can't download or move a file, say which one and continue with whatever you could reach.
 
 ## 3. Write the record
 

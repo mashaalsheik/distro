@@ -5,6 +5,7 @@ capture: unknown             # complete | partial — partial = you only have so
 platforms: []                # every platform it's posted on: tiktok | instagram | youtube | x | linkedin | threads | facebook | pinterest | …
 collected: unknown           # YYYY-MM-DD, the day this record was created
 length: unknown              # slide count for slideshows, seconds for video, 1 for image/text
+frames_fps: auto             # video only: frame rate for tools/frames.mjs; set a number when cuts are faster than the default
 outlier: unknown             # yes | no | unknown — compared with the account's typical post on the same platform
 products: []                 # product slugs this might be relevant to, e.g. [diybcode]
 drive: unknown               # Drive folder link for distro-assets/SW-000/

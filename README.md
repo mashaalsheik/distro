@@ -22,9 +22,11 @@ distribution/
       briefs/               B-<CODE>-###      decisions for one post
       drafts/               D-<CODE>-###-v#   versions, exports, review notes
       results/              R-<CODE>-###      published post, dated metrics, next decision
-  assets/<ID>/              slides and contact sheets (untracked; mirrored to Drive)
+  assets/<ID>/              originals, frames, contact sheets (untracked; lives in Drive, see below)
   index/                    generated CSVs to import into Google Sheets
   tools/build-index.mjs     rebuilds index/ and checks every ID link
+  tools/frames.mjs          extracts video frames and contact sheets
+  tools/setup-local.mjs     links assets/ to Google Drive for Desktop
 ```
 
 ## The pipeline
@@ -54,7 +56,31 @@ To add one: copy `products/_template` to `products/<slug>`, set `code` in `conte
 
 ## Mixed media
 
-Drop screenshots, slideshow images and videos into the same inbox ([Drive](assets/README.md) or `assets/inbox/`). `/dos-collect` groups files into posts, and gives each one a `media` type (`slideshow`, `video`, `image`, `text`) and a `capture` (`complete`, or `partial` when you only have part of it, like one screenshot of a video). A post cross-posted to several platforms is one record, with a row per platform for its account, URL and date, and a performance row per platform per snapshot. Numbers come only from what's visible in the files you supply or what you type in, each with the date it was read and its source. Every record describes content as **beats**: slide numbers for slideshows, timestamps for video. That way hooks, breakdowns and formats can be compared across types. Videos get one frame per second and a timestamped contact sheet. Speech isn't transcribed automatically, so supply the voiceover or the platform's captions.
+Drop screenshots, slideshow images and videos into the same inbox (`assets/inbox/`, which is Drive's `distro-assets/inbox` once you've done the local setup). `/dos-collect` groups files into posts, and gives each one a `media` type (`slideshow`, `video`, `image`, `text`) and a `capture` (`complete`, or `partial` when you only have part of it, like one screenshot of a video). A post cross-posted to several platforms is one record, with a row per platform for its account, URL and date, and a performance row per platform per snapshot. Numbers come only from what's visible in the files you supply or what you type in, each with the date it was read and its source. Every record describes content as **beats**: slide numbers for slideshows, timestamps for video. That way hooks, breakdowns and formats can be compared across types. Videos get frames (2 per second under 15s or for fast cuts, 1 per second up to a minute) and a timestamped contact sheet from `tools/frames.mjs`. Speech isn't transcribed automatically, so supply the voiceover or the platform's captions.
+
+## Assets and Drive
+
+Originals, frames and contact sheets aren't committed. They live in Google Drive:
+
+- **Drive folder:** [distro-assets](https://drive.google.com/drive/folders/1ygNTESJMh-2Q3DY716b0nevJiNi029IZ), one subfolder per record (`SW-001/`, …)
+- **Inbox:** [distro-assets/inbox](https://drive.google.com/drive/folders/1ZbQd7DwCxx6dUrwyZl0xueGQ1mABMXLe) for new references
+
+### Local setup (recommended)
+
+Run Claude Code on your own computer so `assets/` *is* the Drive folder and nothing needs uploading.
+
+1. Install [Google Drive for Desktop](https://www.google.com/drive/download/) and sign in with the account that owns `distro-assets`. Wait until `distro-assets` appears under My Drive.
+2. Install Node 22+ and ffmpeg (macOS: `brew install node ffmpeg` · Windows: `winget install OpenJS.NodeJS ffmpeg`).
+3. Clone and link:
+   ```bash
+   git clone https://github.com/mashaalsheik/distro && cd distro
+   node tools/setup-local.mjs        # finds distro-assets and links assets/ to it
+   ```
+   If it can't find the folder, pass it: `node tools/setup-local.mjs --drive "<path to My Drive>"`.
+4. Put each original video in its `SW-###` folder (any file name), then run `node tools/frames.mjs` to make the frames and contact sheets for every folder that doesn't have them.
+5. Start `claude` in the `distro` folder. The `/dos-*` skills work as before, and everything they save in `assets/` syncs to Drive.
+
+In a cloud session, `assets/` is a plain folder that disappears with the session, so put originals in Drive yourself.
 
 ## Getting started
 
