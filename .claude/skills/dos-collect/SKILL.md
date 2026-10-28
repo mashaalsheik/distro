@@ -39,7 +39,7 @@ Find the next free `SW-###` in `library/swipes/` and create `assets/SW-###/` for
 
 Drive:
 - **Local, with `assets/` linked to Drive** (`node tools/setup-local.mjs`; check with `ls -la assets`): saving to `assets/SW-###/` *is* uploading, and `assets/inbox/` is the Drive inbox. Move inbox files into the record's folder rather than copying them. Get the folder's link from the Drive connector if you have it (search for the `SW-###` folder title); otherwise leave `drive: unknown` and say so.
-- **Cloud session, `assets/` is a plain folder:** files saved there don't reach Drive, and the connector can't upload anything bigger than a small text file. Create `distro-assets/SW-###/` with the connector, put its link in `drive`, and tell the user which original goes in which folder.
+- **Cloud session, `assets/` is a plain folder:** files saved there don't reach Drive and vanish with the session, and the connector can't upload anything bigger than a small text file. So also copy each original video or image to `originals/SW-###.<ext>` and commit it (files under 100 MB; push in batches of about 50 MB). Locally, `node tools/frames.mjs` copies originals into `assets/`, which puts them in Drive. Create `distro-assets/SW-###/` with the connector and put its link in `drive`.
 - If the connector can't download or move a file, say which one and continue with whatever you could reach.
 
 ## 3. Write the record

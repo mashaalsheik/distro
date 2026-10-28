@@ -23,6 +23,7 @@ distribution/
       drafts/               D-<CODE>-###-v#   versions, exports, review notes
       results/              R-<CODE>-###      published post, dated metrics, next decision
   assets/<ID>/              originals, frames, contact sheets (untracked; lives in Drive, see below)
+  originals/                originals collected in cloud sessions, committed so they aren't lost
   index/                    generated CSVs to import into Google Sheets
   tools/build-index.mjs     rebuilds index/ and checks every ID link
   tools/frames.mjs          extracts video frames and contact sheets
@@ -77,10 +78,10 @@ Run Claude Code on your own computer so `assets/` *is* the Drive folder and noth
    node tools/setup-local.mjs        # finds distro-assets and links assets/ to it
    ```
    If it can't find the folder, pass it: `node tools/setup-local.mjs --drive "<path to My Drive>"`.
-4. Put each original video in its `SW-###` folder (any file name), then run `node tools/frames.mjs` to make the frames and contact sheets for every folder that doesn't have them.
+4. Run `node tools/frames.mjs`. It copies everything in `originals/` into the matching Drive folder and makes frames and contact sheets for any folder that doesn't have them. For new references, drop the original in its `SW-###` folder (any file name) and run it again.
 5. Start `claude` in the `distro` folder. The `/dos-*` skills work as before, and everything they save in `assets/` syncs to Drive.
 
-In a cloud session, `assets/` is a plain folder that disappears with the session, so put originals in Drive yourself.
+In a cloud session, `assets/` is a plain folder that disappears with the session, so originals are also committed to `originals/`. That keeps them safe but makes the repo bigger (about 15 MB per screen recording), so prefer collecting locally once that's set up.
 
 ## Getting started
 

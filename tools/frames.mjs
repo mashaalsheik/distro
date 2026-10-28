@@ -4,13 +4,16 @@
 // With no IDs, processes every assets/SW-*/ folder that has a video but no contact sheet.
 // A folder with exactly one video that isn't named source.* has it renamed to source.<ext>.
 // A record's `frames_fps:` frontmatter overrides the automatic rate (e.g. for fast cuts).
-import { existsSync, readdirSync, readFileSync, renameSync, rmSync, mkdirSync } from 'node:fs';
+// Originals committed in originals/SW-###.<ext> are copied into assets/SW-###/ when that folder has no video,
+// so after the local setup this also fills the Drive folders.
+import { existsSync, readdirSync, readFileSync, renameSync, rmSync, mkdirSync, copyFileSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const assets = join(root, 'assets');
+const originals = join(root, 'originals');
 const VIDEO = new Set(['.mp4', '.mov', '.m4v', '.webm', '.mkv']);
 
 const args = process.argv.slice(2);
@@ -26,9 +29,20 @@ try { execFileSync('ffmpeg', ['-version'], { stdio: 'ignore' }); } catch {
 
 const run = (cmd, a) => execFileSync(cmd, a, { stdio: ['ignore', 'pipe', 'pipe'] }).toString().trim();
 
-const folders = ids.length ? ids : readdirSync(assets).filter((n) => /^SW-\d+$/.test(n)).sort();
+const committed = new Map((existsSync(originals) ? readdirSync(originals) : [])
+  .filter((n) => /^SW-\d+\./.test(n) && VIDEO.has(extname(n).toLowerCase()))
+  .map((n) => [n.slice(0, n.indexOf('.')), n]));
+const listed = existsSync(assets) ? readdirSync(assets).filter((n) => /^SW-\d+$/.test(n)) : [];
+const folders = ids.length ? ids : [...new Set([...listed, ...committed.keys()])].sort();
 for (const id of folders) {
   const dir = join(assets, id);
+  const hasVideo = () => existsSync(dir) && readdirSync(dir).some((n) => VIDEO.has(extname(n).toLowerCase()));
+  if (!hasVideo() && committed.has(id)) {
+    const name = committed.get(id);
+    mkdirSync(dir, { recursive: true });
+    copyFileSync(join(originals, name), join(dir, `source${extname(name).toLowerCase()}`));
+    console.log(`${id}: copied originals/${name} into assets/${id}/`);
+  }
   if (!existsSync(dir)) { console.warn(`${id}: no assets/${id}/ folder`); continue; }
   const videos = readdirSync(dir).filter((n) => VIDEO.has(extname(n).toLowerCase()));
   let source = videos.find((n) => n.toLowerCase().startsWith('source.'));
